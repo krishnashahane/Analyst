@@ -37,17 +37,19 @@ git clone https://github.com/krishnashahane/Analyst.git
 ```
 
 Enter the project directory:
-
+```bash
 cd Analyst
-
+```
 Install dependencies:
 ```bash
 npm install
 ```
 Run the project:
-
+```bash
 npm start
-Project Goals
+```
+
+# Project Goals
 
 Build simple tools for data analysis
 
@@ -55,18 +57,14 @@ Experiment with analytical methods
 
 Develop utilities for data-driven decision making
 
-Philosophy
+# Philosophy
 
 Think clearly. Analyze deeply. Build useful tools.
 
-Contributing
+# Contributing
 
 Contributions are welcome.
-
 Fork the repository
-
 Create a new branch
-
 Commit your changes
-
 Open a pull request
