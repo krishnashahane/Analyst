@@ -1,5 +1,7 @@
 # 📊 Analyst
 
+A lightweight toolkit for data analysis, insights, and experimentation.
+
 ![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-yellow?logo=javascript&logoColor=black)
 ![Node.js](https://img.shields.io/badge/Node.js-green?logo=node.js&logoColor=white)
