@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Predictor Analyst</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <span class="logo-icon">&#9733;</span>
+                <h1>AI Predictor Analyst</h1>
+            </div>
+            <p class="subtitle">Intelligent predictions for Healthcare, Academics & Daily Life</p>
+        </header>
+
+        <!-- Domain Tabs -->
+        <div class="tabs">
+            <button class="tab active" data-domain="healthcare">
+                <span class="tab-icon">+</span> Healthcare
+            </button>
+            <button class="tab" data-domain="academics">
+                <span class="tab-icon">&#9654;</span> Academics
+            </button>
+            <button class="tab" data-domain="daily_life">
+                <span class="tab-icon">&#9788;</span> Daily Life
+            </button>
+        </div>
+
+        <!-- Healthcare Form -->
+        <div class="form-panel active" id="panel-healthcare">
+            <h2>Health Diagnosis Predictor</h2>
+            <p class="form-desc">Enter your symptoms and details for an AI-powered health risk assessment.</p>
+            <div class="form-grid">
+                <div class="field full">
+                    <label>Symptoms <span class="hint">(comma-separated)</span></label>
+                    <input type="text" id="h-symptoms" placeholder="e.g., headache, fatigue, dizziness, cough">
+                </div>
+                <div class="field">
+                    <label>Age</label>
+                    <input type="number" id="h-age" value="30" min="1" max="120">
+                </div>
+                <div class="field">
+                    <label>Lifestyle</label>
+                    <select id="h-lifestyle">
+                        <option value="active">Active</option>
+                        <option value="moderate" selected>Moderate</option>
+                        <option value="sedentary">Sedentary</option>
+                    </select>
+                </div>
+            </div>
+            <button class="predict-btn" onclick="predict('healthcare')">Analyze Health Risk</button>
+        </div>
+
+        <!-- Academics Form -->
+        <div class="form-panel" id="panel-academics">
+            <h2>Academic Performance Predictor</h2>
+            <p class="form-desc">Input your academic metrics to predict your performance trajectory.</p>
+            <div class="form-grid">
+                <div class="field">
+                    <label>Current Grade (%)</label>
+                    <input type="number" id="a-grade" value="70" min="0" max="100">
+                </div>
+                <div class="field">
+                    <label>Daily Study Hours</label>
+                    <input type="number" id="a-study" value="2" min="0" max="16" step="0.5">
+                </div>
+                <div class="field">
+                    <label>Attendance (%)</label>
+                    <input type="number" id="a-attendance" value="75" min="0" max="100">
+                </div>
+                <div class="field">
+                    <label>Course Difficulty</label>
+                    <select id="a-difficulty">
+                        <option value="easy">Easy</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="hard">Hard</option>
+                        <option value="very hard">Very Hard</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>Extracurriculars?</label>
+                    <select id="a-extra">
+                        <option value="no">No</option>
+                        <option value="yes">Yes</option>
+                    </select>
+                </div>
+            </div>
+            <button class="predict-btn" onclick="predict('academics')">Predict Performance</button>
+        </div>
+
+        <!-- Daily Life Form -->
+        <div class="form-panel" id="panel-daily_life">
+            <h2>Daily Life Decision Predictor</h2>
+            <p class="form-desc">Describe a decision and your current state for a smart recommendation.</p>
+            <div class="form-grid">
+                <div class="field full">
+                    <label>What decision are you facing?</label>
+                    <input type="text" id="d-decision" placeholder="e.g., Should I go to the gym today?">
+                </div>
+                <div class="field">
+                    <label>Energy Level</label>
+                    <select id="d-energy">
+                        <option value="low">Low</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>Time Available (hours)</label>
+                    <input type="number" id="d-time" value="2" min="0" max="24" step="0.5">
+                </div>
+                <div class="field">
+                    <label>Priority</label>
+                    <select id="d-priority">
+                        <option value="low">Low</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="high">High</option>
+                        <option value="urgent">Urgent</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>Current Mood</label>
+                    <select id="d-mood">
+                        <option value="stressed">Stressed</option>
+                        <option value="sad">Sad</option>
+                        <option value="neutral" selected>Neutral</option>
+                        <option value="happy">Happy</option>
+                        <option value="motivated">Motivated</option>
+                    </select>
+                </div>
+            </div>
+            <button class="predict-btn" onclick="predict('daily_life')">Get Prediction</button>
+        </div>
+
+        <!-- Results -->
+        <div id="results" class="results hidden"></div>
+
+        <footer>
+            <p>AI Predictor Analyst &mdash; For educational purposes only. Not a substitute for professional advice.</p>
+        </footer>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
