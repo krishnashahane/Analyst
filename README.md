@@ -142,10 +142,3 @@ Contributions are welcome:
 ## 📜 License
 
 This project is licensed under the **MIT License**.
-
----
-
-## 💥 Final Thought
-
-> Good data tells you what happened.  
-> Great analysis tells you what to do next.
