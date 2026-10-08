@@ -4,8 +4,6 @@ Uses weighted rule-based scoring with probabilistic modeling
 to predict outcomes across healthcare, academics, and daily life.
 """
 
-import random
-import math
 
 
 class Predictor:
@@ -24,9 +22,19 @@ class Predictor:
     # ── Healthcare Diagnosis Predictor ──────────────────────────────
 
     def _predict_healthcare(self, inputs: dict) -> dict:
-        symptoms = [s.strip().lower() for s in inputs.get("symptoms", "").split(",") if s.strip()]
-        age = int(inputs.get("age", 30))
-        lifestyle = inputs.get("lifestyle", "moderate").lower()
+        raw_symptoms = str(inputs.get("symptoms", ""))
+        if len(raw_symptoms) > 500:
+            return {"error": "Symptoms must be 500 characters or fewer."}
+        symptoms = [s.strip().lower() for s in raw_symptoms.split(",") if s.strip()]
+        try:
+            age = int(inputs.get("age", 30))
+        except (TypeError, ValueError):
+            return {"error": "Age must be a whole number."}
+        if not 1 <= age <= 120:
+            return {"error": "Age must be between 1 and 120."}
+        lifestyle = str(inputs.get("lifestyle", "moderate")).lower()
+        if lifestyle not in {"active", "moderate", "sedentary"}:
+            return {"error": "Invalid lifestyle value."}
 
         if not symptoms:
             return {"error": "Please provide at least one symptom."}
@@ -115,11 +123,22 @@ class Predictor:
     # ── Academics Predictor ─────────────────────────────────────────
 
     def _predict_academics(self, inputs: dict) -> dict:
-        current_grade = float(inputs.get("current_grade", 70))
-        study_hours = float(inputs.get("study_hours", 2))
-        attendance = float(inputs.get("attendance", 75))
-        difficulty = inputs.get("difficulty", "medium").lower()
-        extracurriculars = inputs.get("extracurriculars", "no").lower() == "yes"
+        try:
+            current_grade = float(inputs.get("current_grade", 70))
+            study_hours = float(inputs.get("study_hours", 2))
+            attendance = float(inputs.get("attendance", 75))
+        except (TypeError, ValueError):
+            return {"error": "Academic inputs must be numeric."}
+        if not 0 <= current_grade <= 100:
+            return {"error": "Current grade must be between 0 and 100."}
+        if not 0 <= study_hours <= 16:
+            return {"error": "Study hours must be between 0 and 16."}
+        if not 0 <= attendance <= 100:
+            return {"error": "Attendance must be between 0 and 100."}
+        difficulty = str(inputs.get("difficulty", "medium")).lower()
+        if difficulty not in {"easy", "medium", "hard", "very hard"}:
+            return {"error": "Invalid course difficulty."}
+        extracurriculars = str(inputs.get("extracurriculars", "no")).lower() == "yes"
 
         difficulty_map = {"easy": 1.1, "medium": 1.0, "hard": 0.85, "very hard": 0.7}
         diff_factor = difficulty_map.get(difficulty, 1.0)
@@ -179,11 +198,24 @@ class Predictor:
     # ── Daily Life Decision Predictor ───────────────────────────────
 
     def _predict_daily_life(self, inputs: dict) -> dict:
-        decision = inputs.get("decision", "").strip()
-        energy_level = inputs.get("energy_level", "medium").lower()
-        time_available = float(inputs.get("time_available", 2))
-        priority = inputs.get("priority", "medium").lower()
-        mood = inputs.get("mood", "neutral").lower()
+        decision = str(inputs.get("decision", "")).strip()
+        if len(decision) > 500:
+            return {"error": "Decision description must be 500 characters or fewer."}
+        energy_level = str(inputs.get("energy_level", "medium")).lower()
+        priority = str(inputs.get("priority", "medium")).lower()
+        mood = str(inputs.get("mood", "neutral")).lower()
+        if energy_level not in {"low", "medium", "high"}:
+            return {"error": "Invalid energy level."}
+        if priority not in {"low", "medium", "high", "urgent"}:
+            return {"error": "Invalid priority."}
+        if mood not in {"stressed", "sad", "neutral", "happy", "motivated"}:
+            return {"error": "Invalid mood."}
+        try:
+            time_available = float(inputs.get("time_available", 2))
+        except (TypeError, ValueError):
+            return {"error": "Time available must be numeric."}
+        if not 0 <= time_available <= 24:
+            return {"error": "Time available must be between 0 and 24 hours."}
 
         if not decision:
             return {"error": "Please describe the decision you're facing."}
