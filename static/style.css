@@ -453,3 +453,17 @@ footer {
         font-size: 22px;
     }
 }
+
+
+/* CSP-safe dynamic result styles */
+.prediction-header { display:flex; justify-content:space-between; align-items:center; }
+.error-message { color:var(--red); }
+.verdict-score.score-good { color:var(--green); }
+.verdict-score.score-average { color:var(--orange); }
+.verdict-score.score-low { color:var(--red); }
+.trend { margin-top:8px; font-size:14px; }
+.trend-improving { color:var(--green); }
+.trend-declining { color:var(--red); }
+.pass-likelihood { margin-top:4px; font-size:13px; color:var(--text-dim); }
+.categories { margin-top:8px; }
+.best-time { margin-top:8px; font-size:13px; color:var(--text-dim); }
