@@ -21,7 +21,7 @@ function showError(msg) {
     const card = document.createElement("div");
     card.className = "result-card";
     const p = document.createElement("p");
-    p.style.color = "var(--red)";
+    p.className = "error-message";
     p.textContent = msg;
     card.appendChild(p);
     el.appendChild(card);
@@ -70,7 +70,7 @@ function renderHealthcare(data) {
         const pct = Math.round(Number(p.probability) * 100);
         const sevClass = ["low","moderate","high"].includes(p.severity) ? p.severity : "low";
         const symptoms = (p.matched_symptoms || []).map((s) => '<span class="symptom-tag">' + escapeHtml(s) + "</span>").join("");
-        return '<div class="prediction-item"><div style="display:flex;justify-content:space-between;align-items:center"><span class="prediction-name">' + escapeHtml(p.condition) + '</span><span class="severity-badge severity-' + sevClass + '">' + escapeHtml(sevClass) + '</span></div><div class="prob-bar-wrap"><div class="prob-bar"><div class="prob-fill ' + sevClass + '" style="width:' + Math.max(0,Math.min(100,pct)) + '%"></div></div><div class="prob-label"><span>Probability</span><span>' + pct + '%</span></div></div>' + (symptoms ? '<div class="matched-symptoms">' + symptoms + "</div>" : "") + "</div>";
+        return '<div class="prediction-item"><div class="prediction-header"><span class="prediction-name">' + escapeHtml(p.condition) + '</span><span class="severity-badge severity-' + sevClass + '">' + escapeHtml(sevClass) + '</span></div><div class="prob-bar-wrap"><div class="prob-bar"><div class="prob-fill ' + sevClass + '"></div></div><div class="prob-label"><span>Probability</span><span>' + pct + '%</span></div></div>' + (symptoms ? '<div class="matched-symptoms">' + symptoms + "</div>" : "") + "</div>";
     }).join("");
     const recs = (data.recommendations || []).map((r) => '<div class="rec-item"><span class="rec-bullet">&#10003;</span><span>' + escapeHtml(r) + "</span></div>").join("");
     return '<div class="result-card"><div class="result-header"><span class="result-title">Risk Analysis</span><span class="domain-badge">' + escapeHtml(data.domain) + "</span></div>" + cards + '<div class="recs-section"><h3>Recommendations</h3>' + recs + "</div>" + (data.disclaimer ? '<div class="disclaimer">' + escapeHtml(data.disclaimer) + "</div>" : "") + "</div>";
@@ -85,7 +85,7 @@ function renderAcademics(data) {
     const trendColor = p.grade_trend === "improving" ? "var(--green)" : "var(--red)";
     const analysisHtml = Object.entries(data.analysis || {}).map(([key,val]) => '<div class="analysis-item"><div class="analysis-value">' + escapeHtml(val) + '</div><div class="analysis-label">' + escapeHtml(key.replace(/_/g," ")) + "</div></div>").join("");
     const recs = (data.recommendations || []).map((r) => '<div class="rec-item"><span class="rec-bullet">&#10003;</span><span>' + escapeHtml(r) + "</span></div>").join("");
-    return '<div class="result-card"><div class="result-header"><span class="result-title">Performance Prediction</span><span class="domain-badge">' + escapeHtml(data.domain) + "</span></div><div class="verdict-box"><div class="verdict-score" style="color:' + color + '">' + grade + '%</div><div class="verdict-text">' + escapeHtml(p.outcome) + '</div><div style="margin-top:8px;font-size:14px;color:' + trendColor + '">' + trend + '</div><div style="margin-top:4px;font-size:13px;color:var(--text-dim)">Pass Likelihood: ' + Math.round(Number(p.pass_likelihood)*100) + '%</div></div><div class="analysis-grid">' + analysisHtml + '</div><div class="recs-section"><h3>Recommendations</h3>' + recs + "</div></div>";
+    return '<div class="result-card"><div class="result-header"><span class="result-title">Performance Prediction</span><span class="domain-badge">' + escapeHtml(data.domain) + "</span></div><div class="verdict-box"><div class="verdict-score score-" + (grade >= 75 ? "good" : grade >= 60 ? "average" : "low") + '">' + grade + '%</div><div class="verdict-text">' + escapeHtml(p.outcome) + '</div><div class="trend ' + (p.grade_trend === "improving" ? "trend-improving" : "trend-declining") + '">' + trend + '</div><div class="pass-likelihood">Pass Likelihood: ' + Math.round(Number(p.pass_likelihood)*100) + '%</div></div><div class="analysis-grid">' + analysisHtml + '</div><div class="recs-section"><h3>Recommendations</h3>' + recs + "</div></div>";
 }
 
 function renderDailyLife(data) {
@@ -96,7 +96,7 @@ function renderDailyLife(data) {
     const cats = (p.categories || []).map((c) => '<span class="symptom-tag">' + escapeHtml(c) + "</span>").join("");
     const factorsHtml = Object.entries(data.factors || {}).map(([key,val]) => '<div class="analysis-item"><div class="analysis-value">' + escapeHtml(val) + '</div><div class="analysis-label">' + escapeHtml(key.replace(/_/g," ")) + "</div></div>").join("");
     const tips = (data.tips || []).map((t) => '<div class="rec-item"><span class="rec-bullet">&#9679;</span><span>' + escapeHtml(t) + "</span></div>").join("");
-    return '<div class="result-card"><div class="result-header"><span class="result-title">Decision Analysis</span><span class="domain-badge">' + escapeHtml(data.domain) + "</span></div><div class="verdict-box"><div class="verdict-score" style="color:' + color + '">' + pct + '%</div><div class="verdict-text">' + escapeHtml(p.verdict) + '</div><div style="margin-top:8px">' + cats + '</div><div style="margin-top:8px;font-size:13px;color:var(--text-dim)">Best time: ' + escapeHtml(p.optimal_time) + "</div></div><div class="analysis-grid">' + factorsHtml + '</div><div class="recs-section"><h3>Smart Tips</h3>' + tips + "</div></div>";
+    return '<div class="result-card"><div class="result-header"><span class="result-title">Decision Analysis</span><span class="domain-badge">' + escapeHtml(data.domain) + "</span></div><div class="verdict-box"><div class="verdict-score score-" + (pct >= 75 ? "good" : pct >= 50 ? "average" : "low") + '">' + pct + '%</div><div class="verdict-text">' + escapeHtml(p.verdict) + '</div><div class="categories">' + cats + '</div><div class="best-time">Best time: ' + escapeHtml(p.optimal_time) + "</div></div><div class="analysis-grid">' + factorsHtml + '</div><div class="recs-section"><h3>Smart Tips</h3>' + tips + "</div></div>";
 }
 
 document.querySelectorAll(".predict-btn").forEach((button) => {
