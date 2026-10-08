@@ -100,7 +100,5 @@ function renderDailyLife(data) {
 }
 
 document.querySelectorAll(".predict-btn").forEach((button) => {
-    const match = button.getAttribute("onclick")?.match(/predict\('([^']+)'\)/);
-    if (match) button.onclick = () => predict(match[1], button);
-    button.removeAttribute("onclick");
+    button.addEventListener("click", () => predict(button.dataset.domain, button));
 });
